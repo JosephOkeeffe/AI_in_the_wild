@@ -11,7 +11,7 @@ col_names_thyroid = ['Age', 'Gender', 'Smoking', 'Hx Smoking', 'Hx Radiothreapy'
                      'Stage', 'Response', 'Recurred']
 
 
-thyroid = pd.read_csv("Thyroid_Diff.csv", header=None, names=col_names_thyroid) ## whole file
+thyroid = pd.read_csv("Thyroid_Diff.csv", header=None, names=col_names_thyroid)
 
 
 thyroid['Gender'].replace({'F' : 0, 'M' : 1, }, inplace=True)
@@ -32,7 +32,7 @@ thyroid['Response'].replace({'Biochemical Incomplete' : 0, 'Excellent' : 1, 'Ind
 thyroid['Recurred'].replace({'No' : 0, 'Yes' : 1, }, inplace=True)
 
 print(thyroid)
-#print(thyroid.head())
+print(thyroid.head())
 
 feature_cols_thyroid = ['Age', 'Gender', 'Smoking', 'Hx Smoking', 'Hx Radiothreapy', 'Thyroid Function', 
                          'Physical Examination', 'Adenopathy', 'Pathology', 'Focality', 'Risk', 'T', 'N', 'M', 
