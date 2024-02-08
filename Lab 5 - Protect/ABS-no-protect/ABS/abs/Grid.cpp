@@ -30,7 +30,6 @@ void Grid::setupGrid(int size)
 
 }
 
-
 void Grid::draw(sf::RenderWindow &t_window)
 {
 //    int counter = 0;      // Some debig to checj issues with drawing the grid cells due to outline thickness messing things up.

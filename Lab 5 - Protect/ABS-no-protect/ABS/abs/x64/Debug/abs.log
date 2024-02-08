@@ -1,15 +1,32 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (BehaviourTreeExample.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Droid.cpp
-C:\Users\gameuser\Downloads\ABS-no-protect\ABS\abs\Droid.cpp(14,20): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\gameuser\Downloads\ABS-no-protect\ABS\abs\Droid.cpp(26,40): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+  Game.cpp
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Wander.h(13,19): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(63,23): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(95,68): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
-              T=unsigned int
+              T=float
           ]
-C:\Users\gameuser\Downloads\ABS-no-protect\ABS\abs\Droid.cpp(26,31): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(95,51): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
-              T=unsigned int
+              T=float
           ]
-C:\Users\gameuser\Downloads\ABS-no-protect\ABS\abs\Droid.cpp(43,25): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  abs.vcxproj -> C:\Users\gameuser\Downloads\ABS-no-protect\ABS\x64\Debug\abs.exe
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(104,73): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(104,53): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(110,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(111,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(115,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(116,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Protect.h(49,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Protect.h(50,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Game.cpp(222,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  abs.vcxproj -> C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\x64\Debug\abs.exe
