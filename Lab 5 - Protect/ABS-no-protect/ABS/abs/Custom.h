@@ -1,32 +1,26 @@
-#ifndef PROTECT_H
-#define PROTECT_H
+#ifndef PATROL_H
+#define PATROL_H
 
 #include "Droid.h"
 #include "Routine.h"
 #include <iostream>
 #include <cmath>
 
-class Protect : public Routine
+class Custom : public Routine
 {
-
 public:
 
-    int destX;
-    int destY;
+    sf::Vector2i patrolPointA;
+    sf::Vector2i patrolPointB;
     sf::Vector2f target;
-    int droidA;
-    int droidB;
 
-    Protect(int droidA, int droidB, Grid& g) : Routine(),
-        destX(1), destY(1),
-        target(g.getGridLocation(destX, destY)),
-        droidA(droidA), droidB(droidB)
+    Custom(sf::Vector2i pointA, sf::Vector2i pointB, Grid& g) : Routine(),
+        patrolPointA(pointA),
+        patrolPointB(pointB),
+        target(g.getGridLocation(patrolPointA.x, patrolPointA.y))
     {
-        this->routineType = "Protect";
+        this->routineType = "Patrol";
         this->routineGrid = &g;
-
-        if (droidA != -1) this->droidA = droidA - 1;
-        if (droidB != -1) this->droidB = droidB - 1;
     }
 
     void reset(string msg)
@@ -45,70 +39,51 @@ public:
                 return;
             }
 
-            sf::Vector2f protectPoint = getProtectPoint(grid);
-            destX = round(protectPoint.x);
-            destY = round(protectPoint.y);
+            // Determine the next patrol point based on the current state
+            sf::Vector2i nextPatrolPoint = (state == RoutineState::None || state == RoutineState::Success) ? patrolPointB : patrolPointA;
+            target = grid.getGridLocation(nextPatrolPoint.x, nextPatrolPoint.y);
 
-            destX = std::clamp(destX, 1, grid.gridSize);
-            destY = std::clamp(destY, 1, grid.gridSize);
-
-            droid->target = grid.getGridLocation(destX, destY);
-            if (!isDroidAtDestination(droid, grid)) 
+            if (!isDroidAtDestination(droid, grid))
             {
                 moveDroid(droid, grid);
             }
-            else 
+            else
             {
-                succeed("Protect for " + droid->name);
+                succeed("Patrol for " + droid->name);
             }
         }
-    }
-
-    sf::Vector2f getProtectPoint(Grid& grid)
-    {
-        int droidAx = grid.m_gridDroids[droidA]->x;
-        int droidAy = grid.m_gridDroids[droidA]->y;
-        int droidBx = grid.m_gridDroids[droidB]->x;
-        int droidBy = grid.m_gridDroids[droidB]->y;
-
-        return sf::Vector2f((droidAx + droidBx) / 2.0f, (droidAy + droidBy) / 2.0f);
     }
 
     void moveDroid(Droid* droid, Grid& grid)
     {
-        std::cout << ">>> Droid " << droid->name << " moving to " << destX << ", " << destY << std::endl;
+        std::cout << ">>> Droid " << droid->name << " patrolling to " << target.x << ", " << target.y << std::endl;
 
-        if (destX < 1 || destX > grid.gridSize || destY < 1 || destY > grid.gridSize)
-        {
-            return;
-        }
-
-        sf::Vector2f direction = droid->target - droid->position;
+        sf::Vector2f direction = target - droid->position;
         if (std::abs(grid.length(direction)) > 0)
         {
             auto& position = droid->position;
-            auto& target = droid->target;
+            auto& targetPos = target;
 
-            if (target.y != position.y)
+            if (targetPos.y != position.y)
             {
-                position.y += (target.y > position.y) ? 1 : -1;
+                position.y += (targetPos.y > position.y) ? 1 : -1;
             }
 
-            if (target.x != position.x)
+            if (targetPos.x != position.x)
             {
-                position.x += (target.x > position.x) ? 1 : -1;
+                position.x += (targetPos.x > position.x) ? 1 : -1;
             }
         }
 
-        if (isDroidAtDestination(droid, grid)) 
+        if (isDroidAtDestination(droid, grid))
         {
-            succeed("MoveTo for " + droid->name);
+            succeed("Patrol for " + droid->name);
         }
     }
 
     bool isDroidAtDestination(Droid* droid, Grid& grid)
     {
-        sf::Vector2f direction = droid->target - droid->position;
+        sf::Vector2f direction = target - droid->position;
         return ((int)grid.length(direction) == 0);
     }
 };

@@ -13,6 +13,7 @@
 #include "IsHealthLow.h"
 #include "Hide.h"
 #include "Protect.h"
+#include "Custom.h"
 #include <iostream>
 #include <list>
 
@@ -271,6 +272,19 @@ void Game::setupDroids()
 	d7->setBehaviour(selectorD7);
 	d7->setBrain(new CheckForAlarms()); //The Brain routine gets executed first.
 	d7->setColour(sf::Color(211, 211, 211));
+
+	// Example Droid with a CustomBehavior
+	Droid* d8 = new Droid("D8", 12, 5, 1000, 0, 3, gridWorld);
+	sf::Vector2i goalPointD8(8, 8);
+	Routine* customBehaviorD8 = new Custom(goalPointD8, gridWorld);
+	d8->setBehaviour(customBehaviorD8);
+	d8->setBrain(new CheckForAlarms());
+	d8->setColour(sf::Color::White);
+
+	m_droids.push_back(d8);
+	gridWorld.m_gridDroids = m_droids;
+
+
 
 	m_droids.push_back(d1);
 	m_droids.push_back(d2);
