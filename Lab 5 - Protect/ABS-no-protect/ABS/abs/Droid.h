@@ -51,6 +51,8 @@ public:
 
     sf::Texture droidTex;
     sf::Sprite droidSprite;
+    sf::Font nameFont;
+    sf::Text nameText;
 
 };
 #endif

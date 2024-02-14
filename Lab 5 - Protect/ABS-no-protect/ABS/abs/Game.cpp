@@ -24,7 +24,7 @@ Game::Game() :
 	m_window{ sf::VideoMode{ 1000, 800, 32 }, "Droid Behaviour Tree Example" },
 	m_exitGame{ false } //when true game will exit
 {
-
+	srand(time(nullptr));
 	setupFontAndText(); // load font 
 	setupDroids(); // load texture
 	setupGrid(); // Prepare the grid world
@@ -157,19 +157,21 @@ void Game::updateDroids()
 	for (Droid* d : m_droids)
 	{
 		// If a droid's behaviour completed we kick it off again from the root.
-		if (d->name == "D2" && (d->getBehaviour()->isSuccess() || d->getBehaviour()->isFailure()))
+		if (d->name == "Random Start" && (d->getBehaviour()->isSuccess() || d->getBehaviour()->isFailure()))
 			d->getBehaviour()->reset(" from the main Game loop.");
-		if (d->name == "D3" && d->getBehaviour()->isSuccess())
+		if (d->name == "Wander" && d->getBehaviour()->isSuccess())
 			d->getBehaviour()->reset(" from the main Game loop.");
-		if (d->name == "D4" && d->getBehaviour()->isSuccess())
+		if (d->name == "Patrol" && d->getBehaviour()->isSuccess())
 			d->getBehaviour()->reset(" from the main Game loop.");
-		if (d->name == "D5" && d->getBehaviour()->isSuccess())
+		if (d->name == "Hide" && d->getBehaviour()->isSuccess())
 			d->getBehaviour()->reset(" from the main Game loop.");
-		if (d->name == "D6" && d->getBehaviour()->isSuccess())
+		if (d->name == "Protect Magenta" && d->getBehaviour()->isSuccess())
 			d->getBehaviour()->reset(" from the main Game loop.");
-		if (d->name == "D7" && (d->getBehaviour()->isSuccess() || d->getBehaviour()->isFailure()))	
+		if (d->name == "Hide 2 droids" && d->getBehaviour()->isSuccess())
 			d->getBehaviour()->reset(" from the main Game loop.");
-		if (d->name == "D1")	// Move to where the mouse has been clicked
+		if (d->name == "Flee" && (d->getBehaviour()->isSuccess() || d->getBehaviour()->isFailure()))	
+			d->getBehaviour()->reset(" from the main Game loop.");
+		if (d->name == "Follow")	// Move to where the mouse has been clicked
 		{
 			if (goalSet)
 			{
@@ -212,7 +214,7 @@ void Game::setupDroids()
 
 	// Example Droid with a simple MoveTo Behaviour
 	// Droid d1 will also follow the mouse clicks within the update loop
-	Droid *d1 = new Droid("D1", 5, 5, 1000, 0, 3, gridWorld);
+	Droid *d1 = new Droid("Follow", 5, 5, 1000, 0, 3, gridWorld);
 	Routine* moveTo1 = new MoveTo(5, 10, gridWorld);
 	d1->setBehaviour(moveTo1);
 	d1->target = gridWorld.getGridLocation(7, 9);
@@ -221,21 +223,21 @@ void Game::setupDroids()
 	
 	// Another example Droid with a simple MoveTo Behaviour starting at a random position
 	srand(time(0));
-	Droid* d2 = new Droid("D2", (rand() % (int)gridWorld.gridSize) + 1, (rand() % (int)gridWorld.gridSize) + 1, 1000, 0, 3, gridWorld);
+	Droid* d2 = new Droid("Random Start", (rand() % (int)gridWorld.gridSize) + 1, (rand() % (int)gridWorld.gridSize) + 1, 1000, 0, 3, gridWorld);
 	Routine* moveTo2 = new MoveTo(15, 15, gridWorld);
 	d2->setBehaviour(moveTo2);
 	d2->setBrain(emptyBrain);
 	d2->setColour(sf::Color::Green);
 
 	// Example Droid with a simple Wander Behaviour
-	Droid* d3 = new Droid("D3", 20, 3, 1000, 0, 3, gridWorld);
+	Droid* d3 = new Droid("Wander", 20, 3, 1000, 0, 3, gridWorld);
 	Routine* wander3 = new Wander(gridWorld);
 	d3->setBehaviour(wander3);
 	d3->setBrain(emptyBrain);
 	d3->setColour(sf::Color::Magenta);
 
 	// Example Droid with a Hide Behaviour
-	Droid* d4 = new Droid("D4", (rand() % (int)gridWorld.gridSize) + 1, (rand() % (int)gridWorld.gridSize) + 1, 1000, 0, 3, gridWorld);
+	Droid* d4 = new Droid("Hide", (rand() % (int)gridWorld.gridSize) + 1, (rand() % (int)gridWorld.gridSize) + 1, 1000, 0, 3, gridWorld);
 	Routine* hide4 = new Hide(1, 2, gridWorld);	// Hide behind Green from Yellow
 	d4->setBehaviour(hide4);
 	d4->setBrain(emptyBrain);
@@ -243,14 +245,14 @@ void Game::setupDroids()
 
 	// Example Droid with a Protect Behaviour
 	// Protect Droid 1 (yellow) from Droid 2 (Green)
-	Droid* d5 = new Droid("D5", (rand() % (int)gridWorld.gridSize) + 1, (rand() % (int)gridWorld.gridSize) + 1, 1000, 0, 3, gridWorld);
+	Droid* d5 = new Droid("Protect Magenta", (rand() % (int)gridWorld.gridSize) + 1, (rand() % (int)gridWorld.gridSize) + 1, 1000, 0, 3, gridWorld);
 	Routine* protect1 = new Protect(1, 3, gridWorld); // Protect Yellow from Magenta
 	d5->setBehaviour(protect1);
 	d5->setBrain(emptyBrain);
 	d5->setColour(sf::Color::Blue);
 
 	// Example Droid with a hide Behaviour using 2 random Droids
-	Droid* d6 = new Droid("D6", 7, 3, 1000, 0, 3, gridWorld);
+	Droid* d6 = new Droid("Hide 2 droids", 7, 3, 1000, 0, 3, gridWorld);
 	Routine* hide6 = new Hide(-1, -1, gridWorld); // Pick two random droids for the Hide behaviour
 	d6->setBehaviour(hide6);
 	d6->setBrain(emptyBrain);
@@ -259,7 +261,7 @@ void Game::setupDroids()
 	// Example Droid with a more complex Behaviour
 	// Check for enemies nearby, if found then MoveAway otherwise continue to Goal
 	// Try this with only D1 active so you can test it
-	Droid* d7 = new Droid("D7", 20, 20, 1000, 0, 2, gridWorld);
+	Droid* d7 = new Droid("Flee", 20, 20, 1000, 0, 2, gridWorld);
 	Selector* selectorD7 = new Selector();
 	Sequence* sequenceD7 = new Sequence();
 	Routine* isDroidInRangeD7 = new IsDroidInRange();
@@ -274,20 +276,20 @@ void Game::setupDroids()
 	d7->setColour(sf::Color(211, 211, 211));
 
 	// Example Droid with a simple Wander Behaviour
-	Droid* custom = new Droid("D3", 20, 3, 50000, 0, 3, gridWorld);
+	Droid* custom = new Droid("Patrol", 20, 3, 50000, 0, 3, gridWorld);
 	Routine* customR = new Custom(gridWorld);
 	custom->setBehaviour(customR);
 	custom->setBrain(emptyBrain);
-	custom->setColour(sf::Color::Magenta);
+	custom->setColour(sf::Color(184, 90, 24));
 
 
-	//m_droids.push_back(d1);
-	//m_droids.push_back(d2);
-	//m_droids.push_back(d3);
-	//m_droids.push_back(d4);
-	//m_droids.push_back(d5);
-   // m_droids.push_back(d6);
-	//m_droids.push_back(d7);
+	m_droids.push_back(d1);
+	m_droids.push_back(d2);
+	m_droids.push_back(d3);
+	m_droids.push_back(d4);
+	m_droids.push_back(d5);
+    m_droids.push_back(d6);
+	m_droids.push_back(d7);
 	m_droids.push_back(custom);
 	gridWorld.m_gridDroids = m_droids;	//So we can access them when inside the behaviours.
 

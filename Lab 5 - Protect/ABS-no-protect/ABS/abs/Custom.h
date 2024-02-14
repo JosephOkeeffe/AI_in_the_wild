@@ -11,7 +11,7 @@ public:
     MoveTo* moveTo;
     std::vector<std::pair<int, int>> customPoints;
     int currentPointIndex;
-    sf::Clock rotationClock;  // Clock to measure time for rotation
+    sf::Clock rotationClock;
     bool rotationInProgress;
 
     Custom(Grid& grid) : Routine(), currentPointIndex(0), rotationInProgress(false)
@@ -45,7 +45,7 @@ public:
         if (rotationInProgress)
         {
             rotateDroid(droid);
-            return;  // Don't proceed with regular movement until rotation is complete
+            return;
         }
 
         if (!moveTo->isRunning())
@@ -76,11 +76,12 @@ public:
 private:
     void moveToNextPoint()
     {
+        Node* currentNode = &routineGrid->nodes[customPoints[currentPointIndex].first][customPoints[currentPointIndex].second];
+        currentNode->setColor(sf::Color::Red);
         currentPointIndex = (currentPointIndex + 1) % customPoints.size();
         moveTo = new MoveTo(customPoints[currentPointIndex].first, customPoints[currentPointIndex].second, *routineGrid);
 
-        Node* currentNode = &routineGrid->nodes[customPoints[currentPointIndex].first][customPoints[currentPointIndex].second];
-        currentNode->setColor(sf::Color::Red);
+
         moveTo->start(" to a specific point");
     }
 
@@ -92,7 +93,7 @@ private:
 
     void rotateDroid(Droid* droid)
     {
-        float rotationDuration = 1.0f;  // Change this value for faster rotation
+        float rotationDuration = 1.0f; 
         float rotationAngle = 360.0f * (rotationClock.getElapsedTime().asSeconds() / rotationDuration);
         droid->droidSprite.rotate(rotationAngle);
 

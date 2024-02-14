@@ -2,7 +2,7 @@
 
 Node::Node()
 {
-	m_rectangle.setFillColor(sf::Color::Green);
+	m_rectangle.setFillColor(sf::Color(0,255,0, 100));
 //	m_rectangle.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));		// Cool multi colour grid.
 	m_rectangle.setOutlineThickness(-1.0);
 	m_rectangle.setOutlineColor(sf::Color::Black);

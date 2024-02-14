@@ -15,6 +15,16 @@ Droid::Droid(string name, int x, int y, int health, int damage, int range, Grid&
     position = grid.getGridLocation(x, y);
     target = position;
 
+    nameFont.loadFromFile(("ASSETS\\FONTS\\BRIGHT-NIGHT.ttf"));
+    nameText.setFont(nameFont);
+    nameText.setString(name);
+    nameText.setFillColor(sf::Color::Black);
+    nameText.setOutlineThickness(2);
+    nameText.setFillColor(sf::Color::Black);
+    nameText.setOutlineColor(sf::Color::White);
+    nameText.setCharacterSize(11);
+    nameText.setOrigin(nameText.getGlobalBounds().width / 2, (nameText.getGlobalBounds().height / 2));
+
     if (!droidTex.loadFromFile("ASSETS\\IMAGES\\BB-8.png"))
     {
         // simple error message if previous call fails
@@ -22,7 +32,7 @@ Droid::Droid(string name, int x, int y, int health, int damage, int range, Grid&
     }
     sf::Vector2u z = droidTex.getSize();
     droidSprite.setTexture(droidTex);
-    droidSprite.setScale(sf::Vector2f(0.007f * grid.nodes[0][0].s_radius, 0.007f * grid.nodes[0][0].s_radius));
+    droidSprite.setScale(sf::Vector2f(0.003f * grid.nodes[0][0].s_radius, 0.003f * grid.nodes[0][0].s_radius));
     droidSprite.setOrigin(z.x / 2, z.y / 2);
     //droidSprite.setPosition((x, y));
 
@@ -30,6 +40,9 @@ Droid::Droid(string name, int x, int y, int health, int damage, int range, Grid&
 
 void Droid::update(Grid& grid)
 {
+
+    nameText.setPosition(droidSprite.getPosition().x, droidSprite.getPosition().y + 20);
+
     if (!isAlive())
     {
         std::cout << name + " is dead! " << std::endl;
@@ -38,7 +51,7 @@ void Droid::update(Grid& grid)
     droidSprite.setPosition(position);
     x = grid.getGridCellX(sf::Vector2i(position));
     y = grid.getGridCellY(sf::Vector2i(position));
-        
+
     if (health > 0)
         health = health - 0.1;
 
@@ -80,11 +93,13 @@ void Droid::update(Grid& grid)
 
     handleCollisions(grid);
     brain->reset(" from the Droid update.");    //We want this to run every time.
+
+
 }
 
 float Droid::getNewOrientation(Grid& grid) {
     sf::Vector2f direction = target - position;
-    if (grid.length(direction) > 0) 
+    if (grid.length(direction) > 0)
     {
         float rads = atan2(direction.y, direction.x);
         float newAngle = rads * 180 / pi;   // Convert to degrees
@@ -113,11 +128,12 @@ void Droid::draw(sf::RenderWindow& t_window, Grid& grid)
     else if (alarmHasBeenRaised && !isLowHealth())
         droidSprite.setColor(sf::Color::Green);
     else if (isLowHealth())
-            droidSprite.setColor(sf::Color::Cyan);
+        droidSprite.setColor(sf::Color::Cyan);
     else
         droidSprite.setColor(droidColour);
 
     t_window.draw(droidSprite); //Position of sprite set by the MoveTo behaviour
+    t_window.draw(nameText);
 }
 
 Routine* Droid::getBehaviour() {
