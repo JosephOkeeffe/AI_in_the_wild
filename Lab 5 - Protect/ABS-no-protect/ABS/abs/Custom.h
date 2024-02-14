@@ -1,91 +1,109 @@
-#ifndef PATROL_H
-#define PATROL_H
-
 #include "Droid.h"
-#include "Routine.h"
+#include "MoveTo.h"
 #include <iostream>
-#include <cmath>
+#include <vector>
+#include <SFML/Graphics.hpp>
 
-class Custom : public Routine
-{
+class Custom : public Routine {
+
 public:
 
-    sf::Vector2i patrolPointA;
-    sf::Vector2i patrolPointB;
-    sf::Vector2f target;
+    MoveTo* moveTo;
+    std::vector<std::pair<int, int>> customPoints;
+    int currentPointIndex;
+    sf::Clock rotationClock;  // Clock to measure time for rotation
+    bool rotationInProgress;
 
-    Custom(sf::Vector2i pointA, sf::Vector2i pointB, Grid& g) : Routine(),
-        patrolPointA(pointA),
-        patrolPointB(pointB),
-        target(g.getGridLocation(patrolPointA.x, patrolPointA.y))
+    Custom(Grid& grid) : Routine(), currentPointIndex(0), rotationInProgress(false)
     {
-        this->routineType = "Patrol";
-        this->routineGrid = &g;
+        customPoints = { {15, 3}, {3, 10}, {3, 20}, {15, 26}, {26, 20}, {26, 10} };
+        moveTo = new MoveTo(customPoints[0].first, customPoints[0].second, grid);
+        this->routineType = "MoveToSpecificPoints";
+        this->routineGrid = &grid;
+    }
+
+    void start(string msg)
+    {
+        std::cout << ">>> Starting routine " << routineType << msg << std::endl;
+        state = RoutineState::Running;
+        moveTo->start(" to a specific point.");
     }
 
     void reset(string msg)
     {
         std::cout << ">>> Resetting routine " << routineType << msg << std::endl;
+        currentPointIndex = 0;
+        moveTo = new MoveTo(customPoints[currentPointIndex].first, customPoints[currentPointIndex].second, *routineGrid);
+        rotationInProgress = false;
+
+        moveTo->reset(" to a specific point");
         state = RoutineState::None;
     }
 
     void act(Droid* droid, Grid& grid)
     {
-        if (isRunning())
+        if (rotationInProgress)
         {
-            if (!droid->isAlive() || droid->alarmHasBeenRaised)
-            {
-                fail();
-                return;
-            }
+            rotateDroid(droid);
+            return;  // Don't proceed with regular movement until rotation is complete
+        }
 
-            // Determine the next patrol point based on the current state
-            sf::Vector2i nextPatrolPoint = (state == RoutineState::None || state == RoutineState::Success) ? patrolPointB : patrolPointA;
-            target = grid.getGridLocation(nextPatrolPoint.x, nextPatrolPoint.y);
-
-            if (!isDroidAtDestination(droid, grid))
+        if (!moveTo->isRunning())
+        {
+            if (rotationInProgress)
             {
-                moveDroid(droid, grid);
+                rotateDroid(droid);
             }
             else
             {
-                succeed("Patrol for " + droid->name);
+                moveToNextPoint();
             }
         }
-    }
 
-    void moveDroid(Droid* droid, Grid& grid)
-    {
-        std::cout << ">>> Droid " << droid->name << " patrolling to " << target.x << ", " << target.y << std::endl;
+        moveTo->act(droid, grid);
 
-        sf::Vector2f direction = target - droid->position;
-        if (std::abs(grid.length(direction)) > 0)
+        if (moveTo->isSuccess())
         {
-            auto& position = droid->position;
-            auto& targetPos = target;
-
-            if (targetPos.y != position.y)
-            {
-                position.y += (targetPos.y > position.y) ? 1 : -1;
-            }
-
-            if (targetPos.x != position.x)
-            {
-                position.x += (targetPos.x > position.x) ? 1 : -1;
-            }
+            std::cout << "Reached destination. Starting rotation." << std::endl;
+            startRotation();
         }
-
-        if (isDroidAtDestination(droid, grid))
+        else if (moveTo->isFailure())
         {
-            succeed("Patrol for " + droid->name);
+            fail();
         }
     }
 
-    bool isDroidAtDestination(Droid* droid, Grid& grid)
+private:
+    void moveToNextPoint()
     {
-        sf::Vector2f direction = target - droid->position;
-        return ((int)grid.length(direction) == 0);
+        currentPointIndex = (currentPointIndex + 1) % customPoints.size();
+        moveTo = new MoveTo(customPoints[currentPointIndex].first, customPoints[currentPointIndex].second, *routineGrid);
+
+        Node* currentNode = &routineGrid->nodes[customPoints[currentPointIndex].first][customPoints[currentPointIndex].second];
+        currentNode->setColor(sf::Color::Red);
+        moveTo->start(" to a specific point");
     }
+
+    void startRotation()
+    {
+        rotationInProgress = true;
+        rotationClock.restart();
+    }
+
+    void rotateDroid(Droid* droid)
+    {
+        float rotationDuration = 1.0f;  // Change this value for faster rotation
+        float rotationAngle = 360.0f * (rotationClock.getElapsedTime().asSeconds() / rotationDuration);
+        droid->droidSprite.rotate(rotationAngle);
+
+        if (rotationClock.getElapsedTime().asSeconds() >= rotationDuration)
+        {
+            rotationInProgress = false;
+            rotationClock.restart();
+            std::cout << "Rotation complete. Moving to the next point." << std::endl;
+            moveToNextPoint();
+        }
+    }
+
+
 };
-
-#endif

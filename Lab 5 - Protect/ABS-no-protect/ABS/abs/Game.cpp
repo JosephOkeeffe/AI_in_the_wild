@@ -273,26 +273,22 @@ void Game::setupDroids()
 	d7->setBrain(new CheckForAlarms()); //The Brain routine gets executed first.
 	d7->setColour(sf::Color(211, 211, 211));
 
-	// Example Droid with a CustomBehavior
-	Droid* d8 = new Droid("D8", 12, 5, 1000, 0, 3, gridWorld);
-	sf::Vector2i goalPointD8(8, 8);
-	Routine* customBehaviorD8 = new Custom(goalPointD8, gridWorld);
-	d8->setBehaviour(customBehaviorD8);
-	d8->setBrain(new CheckForAlarms());
-	d8->setColour(sf::Color::White);
-
-	m_droids.push_back(d8);
-	gridWorld.m_gridDroids = m_droids;
+	// Example Droid with a simple Wander Behaviour
+	Droid* custom = new Droid("D3", 20, 3, 50000, 0, 3, gridWorld);
+	Routine* customR = new Custom(gridWorld);
+	custom->setBehaviour(customR);
+	custom->setBrain(emptyBrain);
+	custom->setColour(sf::Color::Magenta);
 
 
-
-	m_droids.push_back(d1);
-	m_droids.push_back(d2);
-	m_droids.push_back(d3);
-	m_droids.push_back(d4);
-	m_droids.push_back(d5);
-    m_droids.push_back(d6);
-	m_droids.push_back(d7);
+	//m_droids.push_back(d1);
+	//m_droids.push_back(d2);
+	//m_droids.push_back(d3);
+	//m_droids.push_back(d4);
+	//m_droids.push_back(d5);
+   // m_droids.push_back(d6);
+	//m_droids.push_back(d7);
+	m_droids.push_back(custom);
 	gridWorld.m_gridDroids = m_droids;	//So we can access them when inside the behaviours.
 
 	int x = gridWorld.getGridCellX(sf::Vector2i(400, 300));

@@ -39,10 +39,12 @@ public:
             return;
         }
         moveTo->act(droid, grid);
-        if (moveTo->isSuccess()) {
+        if (moveTo->isSuccess()) 
+        {
             succeed("Wander for " + droid->name);
         }
-        else if (moveTo->isFailure()) {
+        else if (moveTo->isFailure()) 
+        {
             fail();
         }
     }
