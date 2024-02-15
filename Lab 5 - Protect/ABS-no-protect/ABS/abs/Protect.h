@@ -8,7 +8,6 @@
 
 class Protect : public Routine
 {
-
 public:
 
     int destX;
@@ -17,16 +16,27 @@ public:
     int droidA;
     int droidB;
 
-    Protect(int droidA, int droidB, Grid& g) : Routine(),
-        destX(1), destY(1),
-        target(g.getGridLocation(destX, destY)),
-        droidA(droidA), droidB(droidB)
+    Protect(int droidA, int droidB, Grid& g) : Routine()
+
     {
+        this->destX = 1;
+        this->destY = 1;
+        this->target = g.getGridLocation(destX, destY);
         this->routineType = "Protect";
         this->routineGrid = &g;
 
-        if (droidA != -1) this->droidA = droidA - 1;
-        if (droidB != -1) this->droidB = droidB - 1;
+        this->droidA = droidA;
+        this->droidB = droidB;
+
+
+        if (droidA != -1)
+        {
+            this->droidA = droidA - 1;
+        }
+        if (droidB != -1)
+        {
+            this->droidB = droidB - 1;
+        }
     }
 
     void reset(string msg)
@@ -45,7 +55,7 @@ public:
                 return;
             }
 
-            sf::Vector2f protectPoint = getProtectPoint(grid);
+            sf::Vector2f protectPoint = MoveToClosestProtectPoint(grid);
             destX = round(protectPoint.x);
             destY = round(protectPoint.y);
 
@@ -53,6 +63,7 @@ public:
             destY = std::clamp(destY, 1, grid.gridSize);
 
             droid->target = grid.getGridLocation(destX, destY);
+
             if (!isDroidAtDestination(droid, grid)) 
             {
                 moveDroid(droid, grid);
@@ -64,7 +75,7 @@ public:
         }
     }
 
-    sf::Vector2f getProtectPoint(Grid& grid)
+    sf::Vector2f MoveToClosestProtectPoint(Grid& grid)
     {
         int droidAx = grid.m_gridDroids[droidA]->x;
         int droidAy = grid.m_gridDroids[droidA]->y;
@@ -84,19 +95,30 @@ public:
         }
 
         sf::Vector2f direction = droid->target - droid->position;
+
         if (std::abs(grid.length(direction)) > 0)
         {
-            auto& position = droid->position;
-            auto& target = droid->target;
-
-            if (target.y != position.y)
+            if (droid->target.y != droid->position.y)
             {
-                position.y += (target.y > position.y) ? 1 : -1;
+                if (droid->target.y > droid->position.y)
+                {
+                    droid->position.y = droid->position.y + 1;
+                }
+                else 
+                {
+                    droid->position.y = droid->position.y - 1;
+                }
             }
-
-            if (target.x != position.x)
+            if (droid->target.x != droid->position.x)
             {
-                position.x += (target.x > position.x) ? 1 : -1;
+                if (droid->target.x > droid->position.x)
+                {
+                    droid->position.x = droid->position.x + 1;
+                }
+                else 
+                {
+                    droid->position.x = droid->position.x - 1;
+                }
             }
         }
 

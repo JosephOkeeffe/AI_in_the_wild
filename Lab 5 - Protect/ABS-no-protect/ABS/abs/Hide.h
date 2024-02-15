@@ -121,14 +121,21 @@ public:
             if (destY > grid.gridSize) destY = grid.gridSize;
 
             droid->target = grid.getGridLocation(destX, destY);     // A bit of cludge so we can move the droid smoothly
-            if (!isDroidAtDestination(droid, grid)) {
+            if (!isDroidAtDestination(droid, grid)) 
+            {
                 moveDroid(droid, grid);
             }
             else
-                succeed("Hide for " + droid->name);               // This is the case when we ask it to move to its current location
+            {
+                // This is the case when we ask it to move to its current location
+                succeed("Hide for " + droid->name); 
+            }
 
         }
     }
+
+        
+
     
     void moveDroid(Droid* droid, Grid& grid)
     {
@@ -161,7 +168,8 @@ public:
             }
         }
         //        std::cout << ">>> Droid " << droid->name << " moving to:  " << destX << ", " << destY << std::endl;
-        if (isDroidAtDestination(droid, grid)) {
+        if (isDroidAtDestination(droid, grid)) 
+        {
             succeed("MoveTo for " + droid->name);
         }
     }

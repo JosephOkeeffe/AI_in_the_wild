@@ -26,8 +26,8 @@ C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS
 C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(111,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(115,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Hide.h(116,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Protect.h(49,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Protect.h(50,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Protect.h(59,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Protect.h(60,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Game.cpp(27,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\abs\Game.cpp(225,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   abs.vcxproj -> C:\Users\gameuser\Desktop\Work\AI_in_the_wild\Lab 5 - Protect\ABS-no-protect\ABS\x64\Debug\abs.exe
